@@ -76,7 +76,7 @@ const AddTaskModal = () => {
         }
       }
     },
-    [name, reference, description, type, priority]
+    [router]
   );
   return (
     <>
