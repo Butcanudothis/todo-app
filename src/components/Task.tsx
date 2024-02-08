@@ -21,7 +21,7 @@ const Task = (task: TaskType) => {
   return (
     <tr>
       <td
-        className={` rounded-md p-3 inline-flex items-center justify-center ${priorityColor}`}
+        className={` rounded-md mt-2.5 p-3 inline-flex items-center justify-center ${priorityColor}`}
       >
         <BsFillFileEarmarkCheckFill size="1.5em" />
       </td>
@@ -35,14 +35,14 @@ const Task = (task: TaskType) => {
 
       <td className="py-4 text-sm font-normal text-gray-500 px-6 ">
         <div
-          className={`inline-flex items-center rounded-full w-full ${priorityColor} py-2 px-3 text-xs align-baseline justify-center text-nowrap`}
+          className={`inline-flex items-center rounded-full w-full ${priorityColor} py-2 px-3 text-xs justify-center text-nowrap`}
         >
           <span className="font-bold text-nowrap ">
             {task.priority.toUpperCase()} PRIORITY
           </span>
         </div>
       </td>
-      <td className=" flex flex-row text-nowrap py-4 px-2 text-right text-sm text-gray-600 lg:text-left">
+      <td className=" py-4  font-normal  px-6 text-sm text-gray-600 lg:text-left">
         <DateTimeDisplay date={new Date(task.createdAt)} />
       </td>
     </tr>
