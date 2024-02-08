@@ -1,12 +1,19 @@
 // app/page.tsx
-"use client";
-import TaskList from "@/components/TaskList";
 import TaskHeader from "@/components/TaskHeader";
 import { Container, Heading } from "@chakra-ui/react";
 import StatusTabs from "@/components/StatusTabs";
+import Link from "next/link";
+import Modal from "@/components/AddTaskModal";
+type SearchParamProps = {
+  searchParams: Record<string, string> | null | undefined;
+};
+export default function Page({ searchParams }: SearchParamProps) {
+  const show = searchParams?.show;
 
-export default function Page() {
+
   return (
+      <>
+        {!show && (
     <Container
       border="1px"
       borderColor={"gray.200"}
@@ -17,7 +24,8 @@ export default function Page() {
     >
       <TaskHeader />
       <StatusTabs />
-      <TaskList />
-    </Container>
+    </Container>)}
+    {show && <Modal />}
+      </>
   );
 }

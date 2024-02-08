@@ -1,4 +1,11 @@
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
+
+import {
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+} from "@chakra-ui/react";
 import TaskList from "./TaskList";
 
 const StatusTabs = () => {
@@ -10,6 +17,7 @@ const StatusTabs = () => {
             color: "mainAction.800",
             borderBottomColor: "mainAction.500",
           }}
+          style={{ padding: "0px" }}
         >
           To do
         </Tab>
@@ -23,8 +31,8 @@ const StatusTabs = () => {
         </Tab>
       </TabList>
 
-      <TabPanels>
-        <TabPanel>
+      <TabPanels >
+        <TabPanel style={{ padding: "0px" }}>
           <TaskList />
         </TabPanel>
         <TabPanel>
