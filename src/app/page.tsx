@@ -1,10 +1,23 @@
-import Image from "next/image";
+// app/page.tsx
+"use client";
+import TaskList from "@/components/TaskList";
+import TaskHeader from "@/components/TaskHeader";
+import { Container, Heading } from "@chakra-ui/react";
+import StatusTabs from "@/components/StatusTabs";
 
-export default function Home() {
+export default function Page() {
   return (
-    <main>
-      <h1 className="text-4xl font-bold text-center text-black">Add task</h1>
-      <p className="font-body text-gray-600">UX Designer</p>
-    </main>
+    <Container
+      border="1px"
+      borderColor={"gray.200"}
+      my={10}
+      p={10}
+      maxW="container.lg"
+      borderRadius={8}
+    >
+      <TaskHeader />
+      <StatusTabs />
+      <TaskList />
+    </Container>
   );
 }
