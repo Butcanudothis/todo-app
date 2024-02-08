@@ -1,11 +1,8 @@
 import { BsFillFileEarmarkCheckFill } from "react-icons/bs";
-import React from "react";
+import React, { memo } from "react";
 import DateTimeDisplay from "@/components/DateTimeBadge";
 import { Task as TaskType } from "@prisma/client";
 
-interface TaskProps {
-  task: TaskType;
-}
 function getPriorityColor(priority: "Low" | "Medium" | "High"): string {
   switch (priority) {
     case "Low":
@@ -18,34 +15,29 @@ function getPriorityColor(priority: "Low" | "Medium" | "High"): string {
       return "";
   }
 }
-const Task: React.FC<TaskProps> = ({ task }) => {
+const Task = (task: TaskType) => {
   const jobType = task.type === "JobListing" ? "Job" : "Applicant";
   const priorityColor = getPriorityColor(task.priority);
   return (
     <tr>
-      <td className={`flex flex-col items-start  rounded-md p-3 inline-flex items-center justify-center ${priorityColor}`}>
-
-          <BsFillFileEarmarkCheckFill size="1.5em" />
-
-      </td>
-
       <td
-        width="100%"
-        className="py-1 pl-5 text-lg font-bold text-gray-900"
+        className={` rounded-md p-3 inline-flex items-center justify-center ${priorityColor}`}
       >
-        {task.name}
-          <p
-            className="font-normal text-sm text-gray-500"
-          >
-            {jobType}: {task.reference} - {task.description}
-          </p>
+        <BsFillFileEarmarkCheckFill size="1.5em" />
       </td>
 
-      <td className=" py-4 text-sm font-normal text-gray-500 sm:px-6 lg:table-cell">
+      <td className="py-1 pl-5 text-lg font-bold text-gray-900 min-w-64">
+        {task.name}
+        <p className="font-normal text-sm text-gray-500">
+          {jobType}: {task.reference} - {task.description}
+        </p>
+      </td>
+
+      <td className="py-4 text-sm font-normal text-gray-500 px-6 ">
         <div
-          className={`inline-flex items-center rounded-full ${priorityColor} py-2 px-3 text-xs `}
+          className={`inline-flex items-center rounded-full w-full ${priorityColor} py-2 px-3 text-xs align-baseline justify-center text-nowrap`}
         >
-          <span className="font-bold text-nowrap">
+          <span className="font-bold text-nowrap ">
             {task.priority.toUpperCase()} PRIORITY
           </span>
         </div>
@@ -56,4 +48,5 @@ const Task: React.FC<TaskProps> = ({ task }) => {
     </tr>
   );
 };
-export default Task;
+
+export default memo(Task);

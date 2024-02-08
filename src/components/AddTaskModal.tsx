@@ -1,5 +1,5 @@
 "use client";
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import { CloseButton } from "@chakra-ui/react";
 import Link from "next/link";
 import { z } from "zod";
@@ -14,9 +14,9 @@ const taskSchema = z.object({
   priority: z.enum(["Low", "Medium", "High"]),
 });
 
-
 const AddTaskModal = () => {
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [name, setName] = useState("");
   const [reference, setReference] = useState("");
@@ -25,60 +25,72 @@ const AddTaskModal = () => {
   const [priority, setPriority] = useState("Low");
 
   const [loading, setLoading] = useState(false);
-  const handleFormSubmit = useCallback(async (event:React.FormEvent<HTMLFormElement>) => {
+
+  const handleFormSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-    setLoading(true);
+      setLoading(true);
       const name = (
-          event.currentTarget.elements.namedItem("name") as HTMLInputElement
+        event.currentTarget.elements.namedItem("name") as HTMLInputElement
       )?.value;
       const reference = (
-          event.currentTarget.elements.namedItem("reference") as HTMLInputElement
+        event.currentTarget.elements.namedItem("reference") as HTMLInputElement
       )?.value;
       const description = (
-          event.currentTarget.elements.namedItem("description") as HTMLInputElement
+        event.currentTarget.elements.namedItem(
+          "description"
+        ) as HTMLInputElement
       )?.value;
       const type = (
-          event.currentTarget.elements.namedItem("type") as HTMLInputElement
+        event.currentTarget.elements.namedItem("type") as HTMLInputElement
       )?.value;
       const priority = (
-          event.currentTarget.elements.namedItem("priority") as HTMLInputElement
+        event.currentTarget.elements.namedItem("priority") as HTMLInputElement
       )?.value;
-
-      try {
-          const data = taskSchema.parse({
-              name,
-              reference,
-              description,
-              type,
-              priority,
-          });
-
-          await axios.post("/api/task/", data);
-          setLoading(false);
-          console.log("Task added:", data);
-          router.push("/");
-      } catch (error) {
-            setLoading(false);
-          if (error instanceof z.ZodError) {
-              // Handle validation errors
-              console.error("Validation errors:", error.errors);
-          } else {
-              // Handle other errors
-              console.error("Failed to add task:", error);
-          }
+      if (!name || !reference || !description || !type || !priority) {
+        setErrorMessage("All fields are required.");
+        setLoading(false);
+        return;
       }
-  },[]);
+      try {
+        const data = taskSchema.parse({
+          name,
+          reference,
+          description,
+          type,
+          priority,
+        });
+
+        await axios.post("/api/task/", data);
+        setLoading(false);
+        console.log("Task added:", data);
+        router.push("/");
+      } catch (error) {
+        setLoading(false);
+        if (error instanceof z.ZodError) {
+          // Handle validation errors
+          console.error("Validation errors:", error.errors);
+        } else {
+          // Handle other errors
+          console.error("Failed to add task:", error);
+        }
+      }
+    },
+    [name, reference, description, type, priority]
+  );
   return (
     <>
       <form onSubmit={handleFormSubmit}>
         <div className="fixed inset-0 bg-black bg-opacity-50 z-10 flex justify-center">
           <div className="bg-slate-100 m-10 rounded-md border text-gray-800 shadow-lg z-20 h-1/2 w-1/2">
-            <p className="mt-4 pl-4 text-xl font-bold">Add Task</p>
-            <div className="absolute right-0 top-0 m-3 h-6 w-6 cursor-pointer text-gray-400">
-              <Link href="/" passHref>
-                {" "}
-                <CloseButton />
-              </Link>
+            <div className="m-3 flex items-center justify-between">
+              <p className="mt-4 pl-4 text-xl font-bold">Add Task</p>
+              <div className=" m-3 h-6 w-6 cursor-pointer text-gray-400">
+                <Link href="/" passHref>
+                  {" "}
+                  <CloseButton />
+                </Link>
+              </div>
             </div>
             <div className="flex flex-col items-center px-8 py-10">
               <label className="block w-full" htmlFor="name">
@@ -139,14 +151,44 @@ const AddTaskModal = () => {
                   <option value="High">High</option>
                 </select>
               </label>
-              <div className="mt-8 flex flex-col justify-center space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0">
+              <div className="mt-8 flex flex-col justify-center space-y-3">
                 <button
                   type="submit"
-                  className="whitespace-nowrap rounded-md bg-blue-500 px-4 py-3 font-medium text-white"
+                  className="flex gap-2 align-middle justify-center items-center w-full
+                  whitespace-nowrap rounded-md bg-teal-100 px-4 py-3 font-medium text-teal-500 relative"
                 >
-                    {loading ? "Adding..." : "Add Task"}
+                  {loading ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="teal"
+                          stroke-width="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="teal"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Adding...
+                    </>
+                  ) : (
+                    "Add Task"
+                  )}
                 </button>
               </div>
+              {errorMessage && (
+                <p className="pt-2 text-red-500">{errorMessage}</p>
+              )}
             </div>
           </div>
         </div>
