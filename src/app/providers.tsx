@@ -1,9 +1,17 @@
 // app/providers.tsx
 "use client";
 
-import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-ui/react";
+import {
+  ChakraBaseProvider,
+  extendBaseTheme,
+theme as chakraTheme
+} from "@chakra-ui/react";
 import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
+
+const {   Heading,Container,
+  Tabs } = chakraTheme.components
+
+
 const customVariant = defineStyle((props) => {
   const { colorScheme: c } = props;
   return {
@@ -44,7 +52,7 @@ export const buttonTheme = defineStyleConfig({
   defaultProps: { colorScheme: "mainAction" },
 });
 
-const theme = extendTheme({
+const theme = extendBaseTheme({
   colors: {
     mainAction: {
       50: "#f2f9f9",
@@ -73,9 +81,15 @@ const theme = extendTheme({
   },
   components: {
     Button: buttonTheme,
+    Heading,
+    Tabs,
+    Container,
+
+
   },
 });
 
+
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <ChakraProvider theme={theme}>{children}</ChakraProvider>;
+  return <ChakraBaseProvider theme={theme}>{children}</ChakraBaseProvider>;
 }

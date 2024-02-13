@@ -1,6 +1,6 @@
 // app/page.tsx
 import TaskHeader from "@/components/TaskHeader";
-import { Container, Heading } from "@chakra-ui/react";
+import { Container} from "@chakra-ui/react";
 import StatusTabs from "@/components/StatusTabs";
 import Modal from "@/components/AddTaskModal";
 type SearchParamProps = {
@@ -19,6 +19,7 @@ export default function Page({ searchParams }: SearchParamProps) {
           p={10}
           maxW="container.lg"
           borderRadius={8}
+          className="flex flex-col min-w-96"
         >
           <TaskHeader />
           <StatusTabs />

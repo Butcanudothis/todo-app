@@ -9,14 +9,14 @@ const TaskHeader = () => {
         <Heading as="h2" size="lg">
           Tasks
         </Heading>
-        <div className="flex flex-row justify-between gap-2 py-3 sm:py-0">
-          <Button variant="customVariant">
+        <div className="flex flex-row sm:justify-end  gap-2 py-3 sm:py-0 w-full ">
+          <Button variant="customVariant" className="py-2 px-6">
             <Link href="/?show=true" passHref>
               Add Task
             </Link>
           </Button>
 
-          <Button variant="customVariant">Start workflow</Button>
+          <Button variant="customVariant" className="py-2 px-6">Start workflow</Button>
         </div>
       </div>
     </>
