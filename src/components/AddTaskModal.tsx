@@ -63,7 +63,7 @@ const AddTaskModal = () => {
 
                 await axios.post("/api/task/", data);
                 setLoading(false);
-                console.log("Task added:", data);
+                // console.log("Task added:", data);
                 router.push("/");
             } catch (error) {
                 setLoading(false);
